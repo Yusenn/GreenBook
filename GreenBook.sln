@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenBook.Server", "Server\GreenBook.Server.csproj", "{F3B54E27-F80D-481D-AA87-C2348D6C7D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenBook.Server", "Server\GreenBook.Server.csproj", "{F3B54E27-F80D-481D-AA87-C2348D6C7D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenBook.Client", "Client\GreenBook.Client.csproj", "{FC4822E3-5B4D-421D-B6EF-10CC26C565B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenBook.Client", "Client\GreenBook.Client.csproj", "{FC4822E3-5B4D-421D-B6EF-10CC26C565B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GreenBook.Shared", "Shared\GreenBook.Shared.csproj", "{F9E6BECB-D174-48A4-B174-51009E5D742B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenBook.Shared", "Shared\GreenBook.Shared.csproj", "{F9E6BECB-D174-48A4-B174-51009E5D742B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
