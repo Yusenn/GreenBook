@@ -1,0 +1,27 @@
+﻿body {
+    position:absolute;
+}
+
+.funcs{
+    position:sticky;
+    width:1000px;
+    left:370px;
+    top:120px;
+    height:200px;
+    background-color:gray;
+}
+
+.like{
+    display:inline-block;
+  
+}
+.newMessgae {
+    display: inline-block;
+ 
+}
+.notifi {
+    display: inline-block;
+ 
+}
+
+
