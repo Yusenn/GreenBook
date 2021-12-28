@@ -1,84 +1,70 @@
-﻿body {
-    position: absolute
-}
-
-.top{
-    position:sticky;
-    height:50px;
-    width:100%;
-    top:10px;
-    padding-left:0px;
-    text-align:center;
+﻿.top {
+    position: sticky;
+    height: 50px;
+    width: 100%;
+    top: 10px;
+    padding-left: 0px;
+    text-align: center;
     border: 2px;
 }
-.top1{
-    display:inline-block;
-}
-.top2{
-    display:inline-block;
+
+.top1 {
+    display: inline-block;
 }
 
-
-.box1 {
-    position:absolute;
-    top:120px;
-    left:270px;
-    width: 220px;
-    height: 300px;
-    border-radius: 25px;
-    border: 2px solid #ff6a00;
-    margin:10px;
-}
-.box2 {
-    position: absolute;
-    top: 120px;
-    left: 560px;
-    width: 220px;
-    height: 300px;
-    border-radius: 25px;
-    border: 2px solid #ff6a00;
-    margin: 10px;
-}
-.box3 {
-    position: absolute;
-    top: 120px;
-    left: 850px;
-    width: 220px;
-    height: 300px;
-    border-radius: 25px;
-    border: 2px solid #ff6a00;
-    margin: 10px;
-}
-.box4 {
-    position: absolute;
-    top: 120px;
-    left: 1120px;
-    width: 220px;
-    height: 300px;
-    border-radius: 25px;
-    border: 2px solid #ff6a00;
-    margin: 10px;
+.top2 {
+    display: inline-block;
 }
 
-
-
-.img{
-    position:relative;
-    top:0px;
-    text-align:center;
-    height:70%;
-    width:100%;
-    
+.wrap {
+    margin-top:0px;
+    margin-right:auto;
+    margin-bottom:0px;
+    margin-left:auto;
+}
+#tiles {
+    list-style-type: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
 }
 
-.title {
-    text-align: center;
-    height: 20%;
-    width: 100%;
-}
-.username {
-    text-align: center;
-    height: 10%;
-    width: 100%;
+div{
+    display:block;
 }
 
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.post-basic-info{
+    padding-top:7%;
+    padding-right:7%;
+    padding-bottom:5%;
+    padding-left:7%;
+}
+
+.post-basic-info h3 a {
+    color: #717171;
+    font-size: 1.2em;
+    margin-bottom: 0.2em;
+    display: block;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+}
+
+.post-basic-info p {
+    font-size: 0.875em;
+    color: #B7B5B5;
+    margin-top: 0.6em;
+    margin-right: 0px;
+    margin-bottom: 0.6em;
+    margin-left: 0px;
+    line-height: 1.5em;
+}
