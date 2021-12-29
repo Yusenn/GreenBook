@@ -1,5 +1,5 @@
 ﻿.top {
-    position: sticky;
+    position: fixed;
     height: 50px;
     width: 100%;
     top: 10px;
@@ -16,35 +16,31 @@
     display: inline-block;
 }
 
-.wrap {
-    margin-top:0px;
-    margin-right:auto;
-    margin-bottom:0px;
-    margin-left:auto;
-}
-#tiles {
-    list-style-type: none;
-    position: relative;
-    margin: 0;
-    padding: 0;
+body{
+    background-color:#2ebbbc;
+    font-family:Tahoma;
+    margin:4px;
 }
 
-div{
+.white-panel img {
+    width:100% ;
+    height:auto;
     display:block;
+    background-color:#2ebbbc
+
 }
 
-ul {
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
+.content {
+    column-count: 5;
+    column-gap: 10px;
 }
+.white-panel{
+    padding:2px;
+}
+
 
 .post-basic-info{
-    padding-top:7%;
+    padding-top:2%;
     padding-right:7%;
     padding-bottom:5%;
     padding-left:7%;
