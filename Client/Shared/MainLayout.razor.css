@@ -10,20 +10,19 @@
 }
 
 .sidebar {
-
     background-color:#343a40;
 }
 
 
 .top-row {
-    background-color: #f3e3e3;
-    border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
-    height: 2rem;
-    width:stretch;
-    display: flex;
-    align-items: center;
-    position:sticky;
+    padding:1.5em 0 1.2em;
+    border-bottom: 1px solid;
+    position:fixed;
+    width:100%;
+    top:0;
+    z-index:999;
+    display:inline-block;
+
 }
 
 #nobullt ul{
@@ -41,16 +40,42 @@
     background-color:#00ff90;
 }
 
-    .top-row ::deep a, .top-row .btn-link {
-        white-space: nowrap;
-        margin-left: 1.5rem;
-    }
+.top-row ::deep a{
+    white-space: nowrap;
+    margin-left: 1.5rem;
+}
 
-    .top-row a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.top-row a:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+.top-searchbar{
+    float:left;
+    width:50%;
+    position:relative;
+    margin-left:2em;
+    padding-left:2em;
+}
+.top-inforbar{
+    float:right;
+    width:50%;
+    position:relative;
+    margin-right:2em;
+    padding-right:2em;
+}
+.top-searchbar input[type="submit"] {
+    position: absolute;
+    background: src(/wwwroot/Image/search-icon.png) no-repeat 0px 0px;
+    height: 26px;
+    width: 26px;
+    display: inline-block;
+    border: none;
+    top: 12px;
+    right: -22px;
+    outline: none;
+    cursor: pointer;
+}
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
         display: none;
