@@ -11,6 +11,7 @@ namespace GreenBook.Shared.Domain
     {
         public string Text { get; set; }
 
+
     }
 
 }

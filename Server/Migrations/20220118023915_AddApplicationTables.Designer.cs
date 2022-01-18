@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenBook.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220118020919_AddUserPostComment")]
-    partial class AddUserPostComment
+    [Migration("20220118023915_AddApplicationTables")]
+    partial class AddApplicationTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
