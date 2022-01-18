@@ -9,18 +9,10 @@ namespace GreenBook.Client.Shared.Domain
     {
         public string Title { get; set; }
         public string Text { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
-
+        public string Location { get; set; }
         public string PicUrl { get; set; }
-        public int CommentId { get; set; }
-        public virtual Comment Comment {get;set;}
-        public virtual List<User> User { get; set; }
-
-      
- 
-
-
+        public string Comment { get; set; }
+        public  int UserId { get; set; }
 
        
     }

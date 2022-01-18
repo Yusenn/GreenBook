@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace GreenBook.Client.Shared.Domain
 {
     public abstract class BaseDomainModel
-    {
+    { 
         public int Id { get; set; }
         public DateTime DateCreate { get; set;}
         public DateTime DateUpdate { get; set;}
