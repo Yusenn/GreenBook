@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenBook.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220118023915_AddApplicationTables")]
-    partial class AddApplicationTables
+    [Migration("20220118034756_newdb")]
+    partial class newdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

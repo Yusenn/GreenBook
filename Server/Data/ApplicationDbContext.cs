@@ -1,4 +1,5 @@
 ﻿using GreenBook.Client.Shared.Domain;
+using GreenBook.Server.Configurations.Entities;
 using GreenBook.Server.Models;
 using GreenBook.Shared.Domain;
 using IdentityServer4.EntityFramework.Options;
@@ -24,5 +25,14 @@ namespace GreenBook.Server.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new CommentSeedConfiguration());
+            builder.ApplyConfiguration(new PostSeedConfiguration());
+            builder.ApplyConfiguration(new RoleSeedConfiguration());
+            builder.ApplyConfiguration(new UserSeedConfiguration());
+            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+        }
     }
 }

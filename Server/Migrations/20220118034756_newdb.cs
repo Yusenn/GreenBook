@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GreenBook.Server.Migrations
 {
-    public partial class AddApplicationTables : Migration
+    public partial class newdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
