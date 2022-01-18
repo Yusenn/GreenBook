@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GreenBook.Server.Migrations
 {
-    public partial class newdb : Migration
+    public partial class AddUserPostComment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -218,8 +218,7 @@ namespace GreenBook.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PicUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CommentId = table.Column<int>(type: "int", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -234,41 +233,6 @@ namespace GreenBook.Server.Migrations
                         name: "FK_Posts_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Job = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: false),
-                    CommentId = table.Column<int>(type: "int", nullable: false),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Comments_CommentId",
-                        column: x => x.CommentId,
-                        principalTable: "Comments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -342,16 +306,6 @@ namespace GreenBook.Server.Migrations
                 name: "IX_Posts_CommentId",
                 table: "Posts",
                 column: "CommentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_CommentId",
-                table: "Users",
-                column: "CommentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_PostId",
-                table: "Users",
-                column: "PostId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -378,16 +332,13 @@ namespace GreenBook.Server.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Comments");
