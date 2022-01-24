@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenBook.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220124071035_newdb")]
+    [Migration("20220124074236_newdb")]
     partial class newdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,12 +21,42 @@ namespace GreenBook.Server.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("GreenBook.Client.Shared.Domain.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("GreenBook.Client.Shared.Domain.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreateBy")
                         .HasColumnType("nvarchar(max)");
@@ -54,45 +84,9 @@ namespace GreenBook.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.HasIndex("CommentId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreateBy = "System",
-                            DateCreate = new DateTime(2022, 1, 24, 15, 10, 35, 499, DateTimeKind.Local).AddTicks(8154),
-                            DateUpdate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(5776),
-                            Location = "Singapore",
-                            PicUrl = "singapore/picture",
-                            Text = "Hello! We are travelling to Singapore.",
-                            Title = "Adventure Time",
-                            UpdateBy = "System"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreateBy = "System",
-                            DateCreate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6427),
-                            DateUpdate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6430),
-                            Location = "Thailand",
-                            PicUrl = "thailand/picture",
-                            Text = "Hello! We are eating in Thailand.",
-                            Title = "Food Time",
-                            UpdateBy = "System"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreateBy = "System",
-                            DateCreate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6432),
-                            DateUpdate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6434),
-                            Location = "Switzerland",
-                            PicUrl = "switzerland/picture",
-                            Text = "Hello! We are recommending buying this item from Swiss.",
-                            Title = "Recommendation Time",
-                            UpdateBy = "System"
-                        });
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("GreenBook.Server.Models.ApplicationUser", b =>
@@ -170,7 +164,7 @@ namespace GreenBook.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0e22568a-b3f0-4ac8-8d07-79645b6b8686",
+                            ConcurrencyStamp = "e4b9df08-94eb-439d-ae74-c8c2afa7beb2",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -178,9 +172,9 @@ namespace GreenBook.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAELejubO8oGytA2X8HtH+FxIdBzqc61tuLTILPB/xdE5eMyrPYSuX2s1PWhlYjOpYZA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDhFDp0uSlYbJ5keHWrXxCPHSrgpxcVAHUNHxHgA3PqMTX5bdDgdCEB7+8VgMrXrxg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0c2cc23e-d464-4050-9609-6712e4fa31a0",
+                            SecurityStamp = "aabba7d0-e44b-4998-a381-980618216de2",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -319,14 +313,14 @@ namespace GreenBook.Server.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "a8f1269f-d669-4ee9-8e2d-cd03838e0506",
+                            ConcurrencyStamp = "4163d548-709d-4236-9376-3a564172ea49",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "ca24c5e6-94ec-421f-b3b7-42cd5ee4b173",
+                            ConcurrencyStamp = "d50d4c43-cd16-49e6-a846-c69bacd1b428",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -447,6 +441,17 @@ namespace GreenBook.Server.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("GreenBook.Client.Shared.Domain.Post", b =>
+                {
+                    b.HasOne("GreenBook.Client.Shared.Domain.Comment", "Comment")
+                        .WithMany("Posts")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -496,6 +501,11 @@ namespace GreenBook.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GreenBook.Client.Shared.Domain.Comment", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

@@ -49,6 +49,23 @@ namespace GreenBook.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DeviceCodes",
                 columns: table => new
                 {
@@ -85,26 +102,6 @@ namespace GreenBook.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PicUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,29 +210,47 @@ namespace GreenBook.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PicUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CommentId = table.Column<int>(type: "int", nullable: false),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Comment_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "a8f1269f-d669-4ee9-8e2d-cd03838e0506", "Administrator", "ADMINISTRATOR" },
-                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "ca24c5e6-94ec-421f-b3b7-42cd5ee4b173", "User", "USER" }
-                });
+                values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "4163d548-709d-4236-9376-3a564172ea49", "Administrator", "ADMINISTRATOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "d50d4c43-cd16-49e6-a846-c69bacd1b428", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "0e22568a-b3f0-4ac8-8d07-79645b6b8686", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAELejubO8oGytA2X8HtH+FxIdBzqc61tuLTILPB/xdE5eMyrPYSuX2s1PWhlYjOpYZA==", null, false, "0c2cc23e-d464-4050-9609-6712e4fa31a0", false, "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "Posts",
-                columns: new[] { "Id", "CreateBy", "DateCreate", "DateUpdate", "Location", "PicUrl", "Text", "Title", "UpdateBy" },
-                values: new object[,]
-                {
-                    { 1, "System", new DateTime(2022, 1, 24, 15, 10, 35, 499, DateTimeKind.Local).AddTicks(8154), new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(5776), "Singapore", "singapore/picture", "Hello! We are travelling to Singapore.", "Adventure Time", "System" },
-                    { 2, "System", new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6427), new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6430), "Thailand", "thailand/picture", "Hello! We are eating in Thailand.", "Food Time", "System" },
-                    { 3, "System", new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6432), new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6434), "Switzerland", "switzerland/picture", "Hello! We are recommending buying this item from Swiss.", "Recommendation Time", "System" }
-                });
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "e4b9df08-94eb-439d-ae74-c8c2afa7beb2", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEDhFDp0uSlYbJ5keHWrXxCPHSrgpxcVAHUNHxHgA3PqMTX5bdDgdCEB7+8VgMrXrxg==", null, false, "aabba7d0-e44b-4998-a381-980618216de2", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -306,6 +321,11 @@ namespace GreenBook.Server.Migrations
                 name: "IX_PersistedGrants_SubjectId_SessionId_Type",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "SessionId", "Type" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_CommentId",
+                table: "Posts",
+                column: "CommentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -339,6 +359,9 @@ namespace GreenBook.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Comment");
         }
     }
 }
