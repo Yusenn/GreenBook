@@ -26,9 +26,6 @@ namespace GreenBook.Server.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CreateBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -55,9 +52,45 @@ namespace GreenBook.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentId");
-
                     b.ToTable("Posts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateBy = "System",
+                            DateCreate = new DateTime(2022, 1, 24, 15, 10, 35, 499, DateTimeKind.Local).AddTicks(8154),
+                            DateUpdate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(5776),
+                            Location = "Singapore",
+                            PicUrl = "singapore/picture",
+                            Text = "Hello! We are travelling to Singapore.",
+                            Title = "Adventure Time",
+                            UpdateBy = "System"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateBy = "System",
+                            DateCreate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6427),
+                            DateUpdate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6430),
+                            Location = "Thailand",
+                            PicUrl = "thailand/picture",
+                            Text = "Hello! We are eating in Thailand.",
+                            Title = "Food Time",
+                            UpdateBy = "System"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateBy = "System",
+                            DateCreate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6432),
+                            DateUpdate = new DateTime(2022, 1, 24, 15, 10, 35, 500, DateTimeKind.Local).AddTicks(6434),
+                            Location = "Switzerland",
+                            PicUrl = "switzerland/picture",
+                            Text = "Hello! We are recommending buying this item from Swiss.",
+                            Title = "Recommendation Time",
+                            UpdateBy = "System"
+                        });
                 });
 
             modelBuilder.Entity("GreenBook.Server.Models.ApplicationUser", b =>
@@ -129,33 +162,26 @@ namespace GreenBook.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
 
-            modelBuilder.Entity("GreenBook.Shared.Domain.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreateBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateUpdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdateBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Comments");
+                    b.HasData(
+                        new
+                        {
+                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "0e22568a-b3f0-4ac8-8d07-79645b6b8686",
+                            Email = "admin@localhost.com",
+                            EmailConfirmed = false,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAELejubO8oGytA2X8HtH+FxIdBzqc61tuLTILPB/xdE5eMyrPYSuX2s1PWhlYjOpYZA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "0c2cc23e-d464-4050-9609-6712e4fa31a0",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -286,6 +312,22 @@ namespace GreenBook.Server.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            ConcurrencyStamp = "a8f1269f-d669-4ee9-8e2d-cd03838e0506",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
+                            ConcurrencyStamp = "ca24c5e6-94ec-421f-b3b7-42cd5ee4b173",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -373,6 +415,13 @@ namespace GreenBook.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
+                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -394,17 +443,6 @@ namespace GreenBook.Server.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("GreenBook.Client.Shared.Domain.Post", b =>
-                {
-                    b.HasOne("GreenBook.Shared.Domain.Comment", "Comment")
-                        .WithMany()
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
