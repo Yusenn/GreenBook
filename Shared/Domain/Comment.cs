@@ -5,6 +5,7 @@ namespace GreenBook.Client.Shared.Domain
     public class Comment : BaseDomainModel
     {
         public string Text { get; set; }
-        public virtual List<Post>Posts { get; set; }
+        public int PostId { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

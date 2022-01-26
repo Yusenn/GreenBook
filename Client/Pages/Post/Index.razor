@@ -1,0 +1,68 @@
+﻿@page "/"
+@inject HttpClient _client
+@inject AuthenticationStateProvider _GetAuthenticationStateAsync
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link href="css/Index.css" rel="stylesheet" />
+</head>
+
+@if (Posts == null)
+{
+    <div class="alert alert-info">Loading Makes...</div>
+}
+else
+{
+      
+    <div class="container blog-page">
+        <div class="row clearfix">
+            @foreach (var post in Posts)
+            {
+                <div class="col-lg-4 col-md-12">
+                    <div class="card single_post">
+                        <div class="header">
+                        </div>
+                        <div class="body">
+                            <h3 class="m-t-0 m-b-5"><a href="blog-details.html">@post.Title</a></h3>
+                            <ul class="meta">
+                                <li><a href="javascript:void(0);"><i class="zmdi zmdi-account col-blue"></i>Post By:FanYusen</a></li>
+                                <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Technology</a></li>
+                                <li><a href="javascript:void(0);"><i class="zmdi zmdi-comment-text col-blue"></i>Comments: 3</a></li>
+                                <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Location:@post.Location</a></li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="img-post m-b-15">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="Awesome Image">
+                                <div class="social_share">
+                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-facebook"></i></button>
+                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-twitter"></i></button>
+                                    <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-instagram"></i></button>
+                                </div>
+                            </div>
+
+                            <a href="/post/view/@post.Id" title="read more" class="btn btn-round btn-info">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+}
+
+@code{
+    private List<Post> Posts;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
+        var authstate = await _GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        var name = user.Identity.Name;
+    }
+
+
+}

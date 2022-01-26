@@ -1,0 +1,68 @@
+﻿@page "/post/make"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Posts</h3>
+<hr />
+<br />
+
+<EditForm Model="@post" OnValidSubmit="CreatePost">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Title: </label>
+        <div>
+            <InputText @bind-Value="@post.Title" class="form-control" />
+            <ValidationMessage For="@(()=>post.Title)" />
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Pic Url: </label>
+        <div>
+            <InputText @bind-Value="@post.PicUrl" class="form-control" />
+            <ValidationMessage For="@(()=>post.PicUrl)" />
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Location: </label>
+        <div>
+            <InputText @bind-Value="@post.Location" class="form-control" />
+            <ValidationMessage For="@(()=>post.Location)" />
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Text: </label>
+        <div>
+            <InputTextArea @bind-Value="@post.Text" class="form-control" />
+            <ValidationMessage For="@(()=>post.Text)" />
+
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+        Create Post
+    </button>
+</EditForm>
+
+
+
+@code {
+    Post post = new Post();
+    private IList<Post> Posts;
+    protected async override Task OnInitializedAsync()
+    {
+        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
+    }
+
+
+    private async Task CreatePost()
+    {
+        await _client.PostAsJsonAsync(Endpoints.PostsEndpoint, post);
+        _navManager.NavigateTo("/");
+    }
+
+}
