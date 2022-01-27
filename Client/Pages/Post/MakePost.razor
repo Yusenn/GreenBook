@@ -52,12 +52,6 @@
 
 @code {
     Post post = new Post();
-    private IList<Post> Posts;
-    protected async override Task OnInitializedAsync()
-    {
-        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
-    }
-
 
     private async Task CreatePost()
     {

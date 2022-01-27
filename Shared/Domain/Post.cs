@@ -10,6 +10,7 @@ namespace GreenBook.Client.Shared.Domain
         public string Text { get; set; }
         public string Location { get; set; }
         public string PicUrl { get; set; }
+
         public virtual List<Comment> Comments { get; set; }
 
     }

@@ -8,7 +8,7 @@
 
 
     <div class="header"></div>
-    <div class="content">
+    <div class="content">   
         <div class="wrap">
             <div class="single-page">
                 <div class="single-page-content">
@@ -17,6 +17,7 @@
                     <p>@Post.Text</p>
                 </div>
             </div>
+            <h2>Comments</h2>
             @if (Comments == null)
             {
                 <h2>Comments</h2>
@@ -24,34 +25,26 @@
             }
             else
             {
-                foreach (var comment in Post.Comments)
+                foreach (var comment in Comments)
                 {
                     <div class="comment-section">
-                        <h2>Comments</h2>
-                        <p>User Name</p>
-                        <p>@comment.Text</p>
+                        <p>User Name : @comment.Text</p>
                     </div>
-
                 }
-
             }
-
             <div class="comment-box">
                 <h2>Leave a Comment</h2>
-                <h2>Leave a Comment</h2>
-                <EditForm Model="comment" OnValidSubmit="CreateComment">
+                <EditForm Model="@comment" OnValidSubmit="CreateComment">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div>
-                        <InputTextArea @bind-Value="@comment.Text" class="form-control" />
+                        <InputTextArea @bind-Value="comment.Text" class="form-control" />
                         <ValidationMessage For="@(()=>comment.Text)" />
                     </div>
                     <button type="submit" class="btn btn-success btn-block">
-                        Create Post
+                        Create Comment
                     </button>
                 </EditForm>
-
-
             </div>
         </div>
     </div>
@@ -61,22 +54,23 @@
         Post Post = new Post();
         private List<Comment> Comments;
         Comment comment = new Comment();
+
+
         protected async override Task OnInitializedAsync()
         {
             Post = await _client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{Id}");
             Comments = await _client.GetFromJsonAsync<List<Comment>>($"{Endpoints.CommentsEndpoint}");
-
 
             //var authstate = await _GetAuthenticationStateAsync.GetAuthenticationStateAsync();
             //var user = authstate.User;
             //var name = user.Identity.Name;
         }
 
-        protected async Task CreateComment()
+        private async Task CreateComment()
         {
             await _client.PostAsJsonAsync(Endpoints.CommentsEndpoint, comment);
 
-            _navManager.NavigateTo("/post/view/{Id:int");
+            _navManager.NavigateTo($"/post/view/{Id}");
 
         }
     }
