@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GreenBook.Client.Shared.Domain;
 using GreenBook.Server.Data;
+using GreenBook.Server.IRepository;
 
 namespace GreenBook.Server.Controllers
 {
@@ -14,32 +15,41 @@ namespace GreenBook.Server.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CommentsController(ApplicationDbContext context)
+        //public CommentsController(ApplicationDbContext context)
+        public CommentsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            //_context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Comments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+        //public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+        public async Task<IActionResult> GetComments()
         {
-            return await _context.Comments.ToListAsync();
+            //return await _context.Comments.ToListAsync();
+            var comments = await _unitOfWork.Comments.GetAll();
+            return Ok(comments);
         }
 
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(int id)
+        //public async Task<ActionResult<Comment>> GetComment(int id)
+        public async Task<IActionResult> GetComment(int id)
         {
-            var comment = await _context.Comments.FindAsync(id);
+            //var comment = await _context.Comments.FindAsync(id);
+            var comment = await _unitOfWork.Comments.Get(q => q.Id == id);
 
             if (comment == null)
             {
                 return NotFound();
             }
 
-            return comment;
+            //return comment;
+            return Ok(comment);
         }
 
         // PUT: api/Comments/5
@@ -52,15 +62,17 @@ namespace GreenBook.Server.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(comment).State = EntityState.Modified;
+            //_context.Entry(comment).State = EntityState.Modified;
+            _unitOfWork.Comments.Update(comment);
 
             try
             {
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
+                await _unitOfWork.Save(HttpContext);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CommentExists(id))
+                if (!await CommentExists(id))
                 {
                     return NotFound();
                 }
@@ -78,8 +90,8 @@ namespace GreenBook.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
-            _context.Comments.Add(comment);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Comments.Insert(comment);
+            await _unitOfWork.Save(HttpContext);
 
             return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
         }
@@ -88,21 +100,22 @@ namespace GreenBook.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _unitOfWork.Comments.Get(q => q.Id == id);
             if (comment == null)
             {
                 return NotFound();
             }
 
-            _context.Comments.Remove(comment);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Comments.Delete(id);
+            await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private bool CommentExists(int id)
+        private async Task<bool> CommentExists(int id)
         {
-            return _context.Comments.Any(e => e.Id == id);
+            var comment = await _unitOfWork.Comments.Get(q => q.Id == id);
+            return comment != null;
         }
     }
 }

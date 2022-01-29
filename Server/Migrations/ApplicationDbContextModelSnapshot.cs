@@ -16,7 +16,7 @@ namespace GreenBook.Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.12")
+                .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("GreenBook.Client.Shared.Domain.Comment", b =>
@@ -162,7 +162,7 @@ namespace GreenBook.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dee7ad53-0d8e-45c9-a466-1c6d2e2ca4e3",
+                            ConcurrencyStamp = "9e420e0f-b53f-4e54-815f-3eadf06d935e",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -170,9 +170,9 @@ namespace GreenBook.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBMvd+KO1VUXfpo1pVnsQGHh3SVzUkNJ6TP6hc44EOWwGd1GnCsYn0g4Bf9fjn/qzA==",
+                            PasswordHash = "P@ssword1",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4912f983-a192-4da8-ba91-15a98774a2ca",
+                            SecurityStamp = "ade89ec2-081a-464d-b230-9bf4cf76feaf",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -311,14 +311,14 @@ namespace GreenBook.Server.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "c0bc291c-ad8f-42b7-9372-ced94947f4e5",
+                            ConcurrencyStamp = "5480678c-a06f-48f5-9d62-fec583732555",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "edf74508-983b-4580-86fe-9d7a90c266e0",
+                            ConcurrencyStamp = "e6cb2dbb-98f0-4fa0-bf42-ec96772064ca",
                             Name = "User",
                             NormalizedName = "USER"
                         });

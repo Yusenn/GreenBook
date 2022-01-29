@@ -20,21 +20,30 @@ namespace GreenBook.Server.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
+        //*******************************************
+        //This is the user that will be automatically
+        //made an Administrator
+        //*******************************************
+        const string administrator_username = "Admin@email";
+        const string administrator_role = "Administrators";
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -50,6 +59,13 @@ namespace GreenBook.Server.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -75,10 +91,29 @@ namespace GreenBook.Server.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,
+                    FirstName = Input.FirstName, LastName = Input.LastName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    //Set confirm Email for user
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                    //ensure there is administration_role
+                    var RoleResult = await _roleManager.FindByNameAsync(administrator_role);
+                    if(RoleResult == null)
+                    //if (!await _roleManager.RoleExistsAsync("User"))
+                    {
+                        //create administration_role role
+                        await _roleManager.CreateAsync(new IdentityRole(administrator_role));
+                    }
+                    if(user.UserName.ToLower() == administrator_username.ToLower())
+                    {
+                        //put admin in administrator role
+                        await _userManager.AddToRoleAsync(user, administrator_role);
+                    }
+                    //await _userManager.AddToRoleAsync(user, "User");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

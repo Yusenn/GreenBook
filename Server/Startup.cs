@@ -1,5 +1,7 @@
 using GreenBook.Server.Data;
+using GreenBook.Server.IRepository;
 using GreenBook.Server.Models;
+using GreenBook.Server.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,12 +38,19 @@ namespace GreenBook.Server
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            //configure identity server to put the role claim into the id token
+            //and the access token and prvent the default mapping for roles
+            //in the JwtSecurityTokenHandler.
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options => {
+                    options.IdentityResources["openid"].UserClaims.Add("role");
+                    options.ApiResources.Single().UserClaims.Add("role");
+                });
+            //Need to do this as it maps "role" to ClaimTypes.Role and causes issues
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

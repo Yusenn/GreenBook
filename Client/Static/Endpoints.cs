@@ -11,5 +11,6 @@ namespace GreenBook.Client.Static
 
         public static readonly string PostsEndpoint = $"{Prefix}/posts";
         public static readonly string CommentsEndpoint = $"{Prefix}/comments";
+        public static readonly string AccountsEndpoint = $"{Prefix}/accounts";
     }
 }
