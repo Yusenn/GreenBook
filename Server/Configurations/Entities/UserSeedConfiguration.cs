@@ -24,7 +24,7 @@ namespace GreenBook.Server.Configurations.Entities
                 LastName = "User",
                 UserName = "Admin",
                 NormalizedUserName = "ADMIN",
-                PasswordHash = hasher.HashPassword(null, "P@ssword1")
+                PasswordHash = hasher.HashPassword(null, "P@ssword1"),
             }
             );
         }

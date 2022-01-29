@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CarRentalManagement.Server.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Administrators")]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

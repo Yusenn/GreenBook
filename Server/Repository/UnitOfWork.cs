@@ -1,6 +1,6 @@
-﻿using GreenBook.Server.IRepository;
-using GreenBook.Client.Shared.Domain;
+﻿using GreenBook.Client.Shared.Domain;
 using GreenBook.Server.Data;
+using GreenBook.Server.IRepository;
 using GreenBook.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -11,13 +11,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace CarRentalManagement.Server.Repository
+namespace GreenBook.Server.Repository
 {
-    public class UnitOfWork :IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
-        private IGenericRepository<Post> _posts;
         private IGenericRepository<Comment> _comments;
+        private IGenericRepository<Post> _posts;
+        
 
         private UserManager<ApplicationUser> _userManager;
 
@@ -27,10 +28,10 @@ namespace CarRentalManagement.Server.Repository
             _userManager = userManager;
         }
 
-        public IGenericRepository<Post> Makes
-            => _posts ??= new GenericRepository<Post>(_context);
-        public IGenericRepository<Comment> Models
+        public IGenericRepository<Comment> Comments
             => _comments ??= new GenericRepository<Comment>(_context);
+        public IGenericRepository<Post> Posts
+            => _posts ??= new GenericRepository<Post>(_context);
 
         public void Dispose()
         {
@@ -51,11 +52,11 @@ namespace CarRentalManagement.Server.Repository
 
             foreach (var entry in entries)
             {
-                ((BaseDomainModel)entry.Entity).DateUpdated = DateTime.Now;
+                ((BaseDomainModel)entry.Entity).DateUpdate = DateTime.Now;
                 ((BaseDomainModel)entry.Entity).UpdateBy = user.UserName;
                 if (entry.State == EntityState.Added)
                 {
-                    ((BaseDomainModel)entry.Entity).DateCreated = DateTime.Now;
+                    ((BaseDomainModel)entry.Entity).DateCreate = DateTime.Now;
                     ((BaseDomainModel)entry.Entity).CreateBy = user.UserName;
                 }
             }

@@ -3,11 +3,19 @@
 @inject AuthenticationStateProvider _GetAuthenticationStateAsync
 @inject IJSRuntime js
 @attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Authorization;
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
     <link href="css/Index.css" rel="stylesheet" />
 </head>
+
+<AuthorizeView Roles="@administrator_role">
+        <Authorized>
+            <p> You are an Administrator</p>
+        </Authorized>
+</AuthorizeView>
 
 @if (Posts == null)
 {
@@ -15,7 +23,7 @@
 }
 else
 {
-      
+
     <div class="container blog-page">
         <div class="row clearfix">
             @foreach (var post in Posts)
@@ -64,5 +72,7 @@ else
         var name = user.Identity.Name;
     }
 
-
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    string administrator_role = "Administrators";
 }
