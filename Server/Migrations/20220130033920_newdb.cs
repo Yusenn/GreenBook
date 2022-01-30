@@ -220,7 +220,7 @@ namespace GreenBook.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: true),
+                    PostId = table.Column<int>(type: "int", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -234,23 +234,23 @@ namespace GreenBook.Server.Migrations
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "5480678c-a06f-48f5-9d62-fec583732555", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "e356c4e6-dbb3-4090-9c55-8a72a44b9737", "Administrator", "ADMINISTRATOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "e6cb2dbb-98f0-4fa0-bf42-ec96772064ca", "User", "USER" });
+                values: new object[] { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "86501fcd-2d00-4aad-8ec4-d1a7fc233bf0", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "9e420e0f-b53f-4e54-815f-3eadf06d935e", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "P@ssword1", null, false, "ade89ec2-081a-464d-b230-9bf4cf76feaf", false, "Admin" });
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "2873144d-9876-4e6b-8b63-24fedc3b67c1", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEFX12PYt7zLjpoZr4kW0YJKp4EjIqDAqr/43Wg/TeXEBK/zIAFVi+BJLYUa0GNpWTQ==", null, false, "bf480ae6-b40c-4ff3-8b86-40a82c1ca7d4", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
