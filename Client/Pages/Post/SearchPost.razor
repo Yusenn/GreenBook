@@ -1,0 +1,65 @@
+﻿@inject HttpClient _client
+@inject IJSRuntime js
+@implements IDisposable
+@attribute [Authorize]
+
+@page "/post/search"
+
+<h3 class="card-title">SearchPost</h3>
+
+@if (Posts == null)
+{
+    <div class="alert alert-info">Loading Posts...</div>
+
+}
+else
+{
+    <table class="table table-responsive" id="postsTable">
+        <thread>
+            <tr>
+                <th>Post Title </th>
+                <th>Post Time </th>
+                <th>Post Author </th>
+                <th>Actions</th>
+            </tr>
+        </thread>
+        <tbody>
+            @foreach (var post in Posts)
+            {
+
+                <tr>
+                    <td>@post.Title</td>
+                    <td>@post.DateCreate</td>
+                    <td>@post.CreateBy</td>
+                    <td>
+                        <a href="/post/view/@post.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<Post> Posts;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
+
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#postsTable");
+    }
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#postsTable");
+    }
+
+}

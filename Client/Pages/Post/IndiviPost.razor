@@ -80,7 +80,7 @@
             comment.PostId = Id;
             await _client.PostAsJsonAsync(Endpoints.CommentsEndpoint, comment);
 
-            _navManager.NavigateTo($"/post/view/{Id}");
+            await OnInitializedAsync();
 
         }
     }
