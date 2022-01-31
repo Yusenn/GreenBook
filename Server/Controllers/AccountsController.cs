@@ -1,5 +1,6 @@
 ﻿using GreenBook.Server.Data;
 using GreenBook.Server.Models;
+using GreenBook.Server.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -51,16 +52,31 @@ namespace GreenBook.Server.Controllers
             {
                 if (appUser.Id == id)
                 {
-                    var UserResult = await _userManager.IsInRoleAsync(appUser,"Administrator");
+                    var UserResult = await _userManager.IsInRoleAsync(appUser,"Admin");
                     if (UserResult)
                     {
-                        return Ok("Administrator");
+                        return Ok("Admin");
                     }
                     UserResult = await _userManager.IsInRoleAsync(appUser, "User");
                     if (UserResult)
                     {
                         return Ok("User");
                     }
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment(string id)
+        {
+            var appUserList = await _context.ApplicationUsers.ToListAsync();
+            foreach (var appUser in appUserList)
+            {
+                if (appUser.Id == id)
+                {
+                    await _userManager.DeleteAsync(appUser);
+                    await _userManager.UpdateAsync(appUser);
                 }
             }
             return NotFound();

@@ -19,7 +19,8 @@ namespace GreenBook.Server.Repository
         private readonly ApplicationDbContext _context;
         private IGenericRepository<Comment> _comments;
         private IGenericRepository<Post> _posts;
-        
+        //private IGenericRepository<ApplicationUser> _applicationuser;
+
 
         private UserManager<ApplicationUser> _userManager;
 
@@ -33,6 +34,9 @@ namespace GreenBook.Server.Repository
             => _comments ??= new GenericRepository<Comment>(_context);
         public IGenericRepository<Post> Posts
             => _posts ??= new GenericRepository<Post>(_context);
+        //public IGenericRepository<ApplicationUser> ApplicationUser
+            //=> _applicationuser ??= new GenericRepository<ApplicationUser>(_context);
+
 
         public void Dispose()
         {

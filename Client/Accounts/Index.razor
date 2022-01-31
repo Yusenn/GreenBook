@@ -2,6 +2,7 @@
 @inject HttpClient _client
 @attribute [Authorize]
 @using System.Security.Claims
+@inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h3>Index</h3>
@@ -17,7 +18,6 @@
 }
 <p>Id: @_currentUserId</p>
 <p>Name: @_currentUserName</p>
-<p>Role: @_currentUserRole</p>
 
 @if (AppUsers == null)
 {
@@ -46,7 +46,7 @@ else
                     <td>@appUser.FirstName</td>
                     <td>@appUser.LastName</td>
                 </tr>
-           }
+            }
         </tbody>
     </table>
 }
@@ -56,7 +56,6 @@ else
     private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
     private string _currentUserId;
     private string _currentUserName;
-    private string _currentUserRole;
     protected async override Task OnInitializedAsync()
     {
         AppUsers = await
@@ -76,7 +75,7 @@ else
                     {
                         _currentUserId = claim.Value;
                         continue;
-                        }
+                    }
                     if (claim.Type == "name")
                     {
                         _currentUserName = claim.Value;
@@ -85,9 +84,27 @@ else
                 }
             }
         }
-        if (_currentUserId != String.Empty)
+
+    }
+
+    @*async Task Delete(int id)
         {
-            _currentUserRole = await _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
-        }
+            var account = ApplicationId.(q => q.Id == postId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete{ApplicationId.Title}?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.PostsEndpoint}/{postId}");
+                await OnInitializedAsync();
+            }
+        }*@
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#postsTable");
+    }
+
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#postsTable");
     }
 }
