@@ -13,7 +13,7 @@
             <div class="single-page">
                 <div class="single-page-content">
                     <h3>@Post.Title</h3>
-                    <img src="/Image/img4.jpg" />
+                    <img src="@Post.PicUrl" />
                     <p>@Post.Text</p>
                 </div>
             </div>
@@ -30,12 +30,6 @@
                     {
                         <div class="comment-section">
                             <p>@comment.CreateBy : @comment.Text</p>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="comment-section">
-                            <p>There is no comment for this post </p>
                         </div>
                     }
 
