@@ -1,0 +1,105 @@
+﻿@page "/profile"
+@inject HttpClient _client
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
+@inject IJSRuntime js
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<p>Id: @_currentUserId</p>
+<p>Name: @_currentUserName</p>
+
+@if (Posts == null)
+{
+    <div class="alert alert-info"> Loading Posts.....</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thread>
+            <tr>
+                <th>Post Title </th>
+                <th>Post Time </th>
+                <th>Post Author </th>
+                <th>  Actions</th>
+            </tr>
+        </thread>
+        <tbody>
+            @foreach (var post in Posts)
+            {
+                @if (_currentUserId == post.UserId)
+                {
+                    <tr>
+                        <td>@post.Title</td>
+                        <td>@post.DateCreate</td>
+                        <td>@post.CreateBy</td>
+                        <td>
+                            <a href="/post/view/@post.Id" class="btn btn-primary">
+                                <span class="oi oi-book"></span>
+                            </a>
+                            <a href="/post/edit/@post.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="@(()=>Delete(post.Id))">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+@code {
+    public List<Post> Posts;
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserName;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            //_currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                    if (claim.Type == "name")
+                    {
+                        _currentUserName = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        
+    }
+
+    async Task Delete(int postId)
+    {
+        var post = Posts.First(q => q.Id == postId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete{post.Title}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.PostsEndpoint}/{postId}");
+            await OnInitializedAsync();
+        }
+    }
+}

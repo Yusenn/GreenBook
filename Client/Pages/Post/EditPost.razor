@@ -1,0 +1,24 @@
+﻿@page "/post/edit/{Id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManger
+
+<h3>Edit Post</h3>
+<FormComponent ButtonText="Update" OnValidSubmit="EditingPost" post="post"/>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    Post post = new Post();
+
+    protected async override Task OnInitializedAsync()
+    {
+        post = await _client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{Id}");
+    }
+
+    async Task EditingPost()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.PostsEndpoint}/{Id}",post);
+         _navManger.NavigateTo("/");
+    }
+
+
+}

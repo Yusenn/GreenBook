@@ -1,15 +1,9 @@
-﻿@page "/post/make"
-@inject HttpClient _client
-@inject NavigationManager _navManager
-@inject AuthenticationStateProvider GetAuthenticationStateAsync
+﻿@inject AuthenticationStateProvider GetAuthenticationStateAsync
 @using System.Security.Claims
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient _client
 
-<h3 class="card-title">Create New Posts</h3>
-<hr />
-<br />
-
-<EditForm Model="@post" OnValidSubmit="CreatePost">
+<EditForm Model="@post" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -47,14 +41,13 @@
         </div>
     </div>
     <button type="submit" class="btn btn-success btn-block">
-        Create Post
+        @ButtonText
     </button>
 </EditForm>
-
-
-
 @code {
-    Post post = new Post();
+    [Parameter] public Post post { get; set; }
+    [Parameter] public string ButtonText { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
     private List<AppUser> AppUsers;
     private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
     private string _currentUserId;
@@ -88,15 +81,6 @@
                 }
             }
         }
-        
+
     }
-
-
-    private async Task CreatePost()
-    {
-        post.UserId = _currentUserId;
-        await _client.PostAsJsonAsync(Endpoints.PostsEndpoint, post);
-        _navManager.NavigateTo("/");
-    }
-
 }

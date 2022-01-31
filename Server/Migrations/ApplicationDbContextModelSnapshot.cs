@@ -35,7 +35,7 @@ namespace GreenBook.Server.Migrations
                     b.Property<DateTime>("DateUpdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PostId")
+                    b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -80,6 +80,9 @@ namespace GreenBook.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -162,7 +165,7 @@ namespace GreenBook.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5b79c56c-c3ba-4b3a-9748-88f254410f39",
+                            ConcurrencyStamp = "9e420e0f-b53f-4e54-815f-3eadf06d935e",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -170,9 +173,9 @@ namespace GreenBook.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGch5EpSg8wU7zd5nem4CqiZuHdKuGK4Ng0b54L0fir4IWQ6ZBQPxRRbtnmqzscNbw==",
+                            PasswordHash = "P@ssword1",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4957739a-ad2a-4fff-ad3f-5e19a3ebaa89",
+                            SecurityStamp = "ade89ec2-081a-464d-b230-9bf4cf76feaf",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -311,6 +314,9 @@ namespace GreenBook.Server.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
+                            ConcurrencyStamp = "e9fab2f0-5c71-4f46-97e4-4ea822c6aacf",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                             ConcurrencyStamp = "4b18c674-3167-4abd-8756-fd0933ddfb06",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -318,7 +324,7 @@ namespace GreenBook.Server.Migrations
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "9fd5bc41-66b5-44f5-ad28-8af26696b19f",
+                            ConcurrencyStamp = "055f3574-f66a-4799-9075-8577f3e0da41",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -443,7 +449,9 @@ namespace GreenBook.Server.Migrations
                 {
                     b.HasOne("GreenBook.Client.Shared.Domain.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Post");
                 });

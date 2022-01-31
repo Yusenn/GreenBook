@@ -1,6 +1,7 @@
 ﻿using GreenBook.Client.Shared.Domain;
 using GreenBook.Server.Configurations.Entities;
 using GreenBook.Server.Models;
+using GreenBook.Client.Shared.Domain;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;

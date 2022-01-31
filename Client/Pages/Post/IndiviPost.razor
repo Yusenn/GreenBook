@@ -12,24 +12,27 @@
         <div class="wrap">
             <div class="single-page">
                 <div class="single-page-content">
-                    <img src="/Image/img4.jpg" />
                     <h3>@Post.Title</h3>
+                    <img src="@Post.PicUrl" />
                     <p>@Post.Text</p>
                 </div>
             </div>
             <h2>Comments</h2>
             @if (Comments == null)
             {
-                <h2>Comments</h2>
                 <p>There is no comment yet</p>
             }
             else
             {
                 foreach (var comment in Comments)
                 {
-                    <div class="comment-section">
-                        <p>User Name : @comment.Text</p>
-                    </div>
+                    if (comment.PostId == Id)
+                    {
+                        <div class="comment-section">
+                            <p>@comment.CreateBy : @comment.Text</p>
+                        </div>
+                    }
+
                 }
             }
             <div class="comment-box">
@@ -52,9 +55,9 @@
     @code {
         [Parameter] public int Id { get; set; }
         Post Post = new Post();
-        private List<Comment> Comments;
+        private IList<Comment> Comments;
         Comment comment = new Comment();
-
+        
 
         protected async override Task OnInitializedAsync()
         {
@@ -68,9 +71,10 @@
 
         private async Task CreateComment()
         {
+            comment.PostId = Id;
             await _client.PostAsJsonAsync(Endpoints.CommentsEndpoint, comment);
 
-            _navManager.NavigateTo($"/post/view/{Id}");
+            await OnInitializedAsync();
 
         }
     }
