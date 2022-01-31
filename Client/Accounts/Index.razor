@@ -87,8 +87,7 @@ else
         }
         if (_currentUserId != String.Empty)
         {
-            _currentUserRole = await
-            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+            _currentUserRole = await _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
         }
     }
 }

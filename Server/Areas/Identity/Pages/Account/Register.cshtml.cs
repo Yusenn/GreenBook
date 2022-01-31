@@ -20,12 +20,7 @@ namespace GreenBook.Server.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        //*******************************************
-        //This is the user that will be automatically
-        //made an Administrator
-        //*******************************************
-        const string administrator_username = "Admin@email";
-        const string administrator_role = "Administrators";
+        //const string ADMINISTRATOR_USERNAME = "Admin@email";
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
@@ -96,23 +91,19 @@ namespace GreenBook.Server.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    //Set confirm Email for user
+                    // Set confirm Email for user
                     user.EmailConfirmed = true;
                     await _userManager.UpdateAsync(user);
-                    //ensure there is administration_role
-                    var RoleResult = await _roleManager.FindByNameAsync(administrator_role);
-                    if(RoleResult == null)
-                    //if (!await _roleManager.RoleExistsAsync("User"))
+                    await _roleManager.CreateAsync(new IdentityRole("User"));
+                    await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                    if(user.Email.StartsWith("admin"))
                     {
-                        //create administration_role role
-                        await _roleManager.CreateAsync(new IdentityRole(administrator_role));
+                        await _userManager.AddToRoleAsync(user, "Admin");
                     }
-                    if(user.UserName.ToLower() == administrator_username.ToLower())
+                    else
                     {
-                        //put admin in administrator role
-                        await _userManager.AddToRoleAsync(user, administrator_role);
+                        await _userManager.AddToRoleAsync(user, "User");
                     }
-                    //await _userManager.AddToRoleAsync(user, "User");
 
                     _logger.LogInformation("User created a new account with password.");
 
