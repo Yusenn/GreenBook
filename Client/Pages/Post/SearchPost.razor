@@ -10,43 +10,46 @@
 @if (Posts == null)
 {
     <div class="alert alert-info">Loading Posts...</div>
-
 }
 else
 {
-    <table class="table table-responsive" id="postsTable">
-        <thread>
-            <tr>
-                <th>Post Title </th>
-                <th>Post Time </th>
-                <th>Post Author </th>
-                <th>Actions</th>
-            </tr>
-        </thread>
-        <tbody>
-            @foreach (var post in Posts)
-            {
+<table id="postsTable" class="table table-responsive">
+    <thread>
 
-                <tr>
-                    <td>@post.Title</td>
-                    <td>@post.DateCreate</td>
-                    <td>@post.CreateBy</td>
-                    <td>
-                        <a href="/post/view/@post.Id" class="btn btn-primary">
-                            <span class="oi oi-book"></span>
-                        </a>
-                    </td>
-                </tr>
-            }
+        <tr>
+            <th>Post Title </th>
+            <th>Post Time </th>
+            <th>Post Author </th>
+            <th>Actions</th>
+        </tr>
 
+    </thread>
+
+
+    <tbody>
+
+        @foreach (var post in Posts)
+        {
+        <tr>
+            <td>@post.Title</td>
+            <td>@post.DateCreate</td>
+            <td>@post.CreateBy</td>
+            <td>
+                <a href="/post/view/@post.Id" class="btn btn-primary">
+                    <span class="oi oi-book"></span>
+                </a>
+            </td>
+        </tr>
+         }
+            
         </tbody>
-    </table>
+</table>
 }
 
 
 @code {
     private List<Post> Posts;
-
+    
     protected async override Task OnInitializedAsync()
     {
         Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
@@ -55,11 +58,11 @@ else
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        await js.InvokeVoidAsync("AddDataTable", "#postsTable");
+        await js.InvokeVoidAsync("AddDataTable", "postsTable");
     }
     public void Dispose()
     {
-        js.InvokeVoidAsync("DataTablesDispose", "#postsTable");
+        js.InvokeVoidAsync("DataTablesDispose", "postsTable");
     }
 
 }

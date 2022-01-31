@@ -17,7 +17,6 @@
 }
 <p>Id: @_currentUserId</p>
 <p>Name: @_currentUserName</p>
-<p>Role: @_currentUserRole</p>
 
 @if (AppUsers == null)
 {
@@ -56,7 +55,6 @@ else
     private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
     private string _currentUserId;
     private string _currentUserName;
-    private string _currentUserRole;
     protected async override Task OnInitializedAsync()
     {
         AppUsers = await
@@ -85,9 +83,6 @@ else
                 }
             }
         }
-        if (_currentUserId != String.Empty)
-        {
-            _currentUserRole = await _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
-        }
+        
     }
 }
