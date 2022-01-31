@@ -57,6 +57,7 @@ else
     {
         await js.InvokeVoidAsync("AddDataTable", "#postsTable");
     }
+
     public void Dispose()
     {
         js.InvokeVoidAsync("DataTablesDispose", "#postsTable");

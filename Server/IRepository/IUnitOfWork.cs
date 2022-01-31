@@ -1,4 +1,5 @@
 ﻿using GreenBook.Client.Shared.Domain;
+using GreenBook.Server.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace GreenBook.Server.IRepository
         Task Save(HttpContext httpContext);
         IGenericRepository<Comment> Comments { get; }
         IGenericRepository<Post> Posts { get; }
+        //IGenericRepository<ApplicationUser> ApplicationUser { get; }
     }
 }

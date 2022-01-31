@@ -93,10 +93,11 @@ namespace GreenBook.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PicUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -220,7 +221,7 @@ namespace GreenBook.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostId = table.Column<int>(type: "int", nullable: true),
+                    PostId = table.Column<int>(type: "int", nullable: false),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateUpdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -234,23 +235,23 @@ namespace GreenBook.Server.Migrations
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "4b18c674-3167-4abd-8756-fd0933ddfb06", "Admin", "ADMIN" });
+                values: new object[] { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "f23b95a3-4555-4270-bf96-0313f8dee171", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "9fd5bc41-66b5-44f5-ad28-8af26696b19f", "User", "USER" });
+                values: new object[] { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "51939cd2-6eca-4221-9c85-2693aba2bb55", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "5b79c56c-c3ba-4b3a-9748-88f254410f39", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEGch5EpSg8wU7zd5nem4CqiZuHdKuGK4Ng0b54L0fir4IWQ6ZBQPxRRbtnmqzscNbw==", null, false, "4957739a-ad2a-4fff-ad3f-5e19a3ebaa89", false, "Admin" });
+                values: new object[] { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "5c5e16d6-94e4-49df-8b43-1a840047832f", "admin@localhost.com", false, "Admin", "User", false, null, "ADMIN@LOCALHOST.COM", "ADMIN", "AQAAAAEAACcQAAAAEPltF+u1dH7IGsZLy4VN+jaIPDZcuv1oq161iDEJiTe1Diguk7p9H/KW0q6UqHb2Cw==", null, false, "f827e58a-b63e-4d27-8cbc-3f85afc2d57f", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
