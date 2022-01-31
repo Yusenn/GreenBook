@@ -165,7 +165,7 @@ namespace GreenBook.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9968d1f0-d118-42c1-a8a0-6319e6bdbfc0",
+                            ConcurrencyStamp = "9e420e0f-b53f-4e54-815f-3eadf06d935e",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -173,9 +173,9 @@ namespace GreenBook.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEIJF0crBQvnZvYWVff5LIUbyDr2eEF0Q9zZ5GelRZWqTH3NB3LcfbXtiQQ6pS9wGA==",
+                            PasswordHash = "P@ssword1",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "01829fed-8f4b-4de1-8d83-c2008fb34350",
+                            SecurityStamp = "ade89ec2-081a-464d-b230-9bf4cf76feaf",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -317,6 +317,9 @@ namespace GreenBook.Server.Migrations
                             ConcurrencyStamp = "e9fab2f0-5c71-4f46-97e4-4ea822c6aacf",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
+                            ConcurrencyStamp = "4b18c674-3167-4abd-8756-fd0933ddfb06",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {

@@ -18,8 +18,8 @@ namespace GreenBook.Server.Configurations.Entities
                 new IdentityRole
                 {
                     Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR"
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
                 },
                 new IdentityRole
                 {

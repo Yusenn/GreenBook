@@ -40,21 +40,23 @@ namespace GreenBook.Server
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            //configure identity server to put the role claim into the id token
-            //and the access token and prvent the default mapping for roles
-            //in the JwtSecurityTokenHandler.
+
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options => {
-                    options.IdentityResources["openid"].UserClaims.Add("role");
-                    options.ApiResources.Single().UserClaims.Add("role");
-                });
-            //Need to do this as it maps "role" to ClaimTypes.Role and causes issues
+            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options => {
+                options.IdentityResources["openid"].UserClaims.Add("name");
+                options.ApiResources.Single().UserClaims.Add("name");
+                options.IdentityResources["openid"].UserClaims.Add("role");
+                options.ApiResources.Single().UserClaims.Add("role");
+            });
+
+            System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
+
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddRazorPages();
             services.AddResponseCompression(opts =>
             {

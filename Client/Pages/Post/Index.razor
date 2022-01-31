@@ -11,10 +11,15 @@
     <link href="css/Index.css" rel="stylesheet" />
 </head>
 
-<AuthorizeView Roles="@administrator_role">
+<AuthorizeView Roles="Admin">
         <Authorized>
             <p> You are an Administrator</p>
         </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <p> You are an User</p>
+    </Authorized>
 </AuthorizeView>
 
 @if (Posts == null)
