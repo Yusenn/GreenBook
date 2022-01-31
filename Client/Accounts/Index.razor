@@ -2,6 +2,7 @@
 @inject HttpClient _client
 @attribute [Authorize]
 @using System.Security.Claims
+@inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 <h3>Index</h3>
@@ -45,7 +46,7 @@ else
                     <td>@appUser.FirstName</td>
                     <td>@appUser.LastName</td>
                 </tr>
-           }
+            }
         </tbody>
     </table>
 }
@@ -74,7 +75,7 @@ else
                     {
                         _currentUserId = claim.Value;
                         continue;
-                        }
+                    }
                     if (claim.Type == "name")
                     {
                         _currentUserName = claim.Value;
@@ -83,6 +84,27 @@ else
                 }
             }
         }
-        
+
+    }
+
+    @*async Task Delete(int id)
+        {
+            var account = ApplicationId.(q => q.Id == postId);
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete{ApplicationId.Title}?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.PostsEndpoint}/{postId}");
+                await OnInitializedAsync();
+            }
+        }*@
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#postsTable");
+    }
+
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#postsTable");
     }
 }
