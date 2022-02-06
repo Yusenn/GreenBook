@@ -29,72 +29,74 @@
                     </tr>
                 </thread>
                 <tbody>
-                        @foreach (var post in Posts)
-                        {
+                    @foreach (var post in Posts)
+                    {
 
-                            <tr>
-                                <td>@post.Title</td>
-                                <td>@post.DateCreate</td>
-                                <td>@post.CreateBy</td>
-                                <td>
-                                    <a href="/post/view/@post.Id" class="btn btn-primary">
-                                        <span class="oi oi-book"></span>
-                                    </a>
-                                    <button class="btn btn-danger" @onclick="@(() => Delete(post.Id))">
-                                        <span class="oi oi-delete"></span>
-                                    </button>
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>@post.Title</td>
+                            <td>@post.DateCreate</td>
+                            <td>@post.CreateBy</td>
+                            <td>
+                                <a href="/post/view/@post.Id" class="btn btn-primary">
+                                    <span class="oi oi-book"></span>
+                                </a>
+                                <button class="btn btn-danger" @onclick="@(() => Delete(post.Id))">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         }
 
     </Authorized>
-</AuthorizeView>
-        
-            @if (Posts == null)
-            {
-                <div class="alert alert-info">Loading Posts...</div>
-            }
-            else
-            {
 
-                <div class="container blog-page">
-                    <div class="row clearfix">
-                        @foreach (var post in Posts)
-                        {
-                            <div class="col-lg-4 col-md-12">
-                                <div class="card single_post">
-                                    <div class="header">
-                                    </div>
-                                    <div class="body">
-                                        <h3 class="m-t-0 m-b-5"><a href="blog-details.html">@post.Title</a></h3>
-                                        <ul class="meta">
-                                            <li><a href="javascript:void(0);"><i class="zmdi zmdi-account col-blue"></i>Post By:@post.CreateBy</a></li>
-                                            <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Technology</a></li>
-                                            <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Location:@post.Location</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="body">
-                                        <div class="img-post m-b-15">
-                                            <img src="@post.PicUrl" alt="Awesome Image">
-                                            <div class="social_share">
-                                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-facebook"></i></button>
-                                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-twitter"></i></button>
-                                                <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-instagram"></i></button>
-                                            </div>
+    <NotAuthorized>
+        @if (Posts == null)
+        {
+            <div class="alert alert-info">Loading Posts...</div>
+        }
+        else
+        {
+
+            <div class="container blog-page">
+                <div class="row clearfix">
+                    @foreach (var post in Posts)
+                    {
+                        <div class="col-lg-4 col-md-12">
+                            <div class="card single_post">
+                                <div class="header">
+                                </div>
+                                <div class="body">
+                                    <h3 class="m-t-0 m-b-5"><a href="blog-details.html">@post.Title</a></h3>
+                                    <ul class="meta">
+                                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-account col-blue"></i>Post By:@post.CreateBy</a></li>
+                                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Technology</a></li>
+                                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Location:@post.Location</a></li>
+                                    </ul>
+                                </div>
+                                <div class="body">
+                                    <div class="img-post m-b-15">
+                                        <img src="@post.PicUrl"  width="400" height="200" alt="Awesome Image">
+                                        <div class="social_share">
+                                            <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-facebook"></i></button>
+                                            <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-twitter"></i></button>
+                                            <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-instagram"></i></button>
                                         </div>
-
-                                        <a href="/post/view/@post.Id" title="read more" class="btn btn-round btn-info">Read More</a>
                                     </div>
+
+                                    <a href="/post/view/@post.Id" title="read more" class="btn btn-round btn-info">Read More</a>
                                 </div>
                             </div>
-                        }
-                    </div>
+                        </div>
+                    }
                 </div>
+            </div>
 
-            }
+        }
+    </NotAuthorized>
+</AuthorizeView>
 
 @code{
     private List<Post> Posts;
@@ -125,8 +127,5 @@
     {
         js.InvokeVoidAsync("DataTablesDispose", "#postsTable");
     }
-
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
-    string administrator_role = "Administrators";
 }
+    
