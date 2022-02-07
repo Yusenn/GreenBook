@@ -84,6 +84,9 @@ namespace GreenBook.Server.Migrations
                     b.Property<string>("UpdateBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserIId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
@@ -167,7 +170,7 @@ namespace GreenBook.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a8d861b1-b9f3-42f5-93ef-d22caba82881",
+                            ConcurrencyStamp = "ddde4590-d507-4b50-aae1-ddfb947af15a",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -175,12 +178,76 @@ namespace GreenBook.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEkUvkwAuq8Jtvs+H7u6cE2wm8PFX7hng33Ybz08jCIOZ1esCmcVCeNHUdDN0MTSCQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKLTXR+4VGdnqbf3iTOvdpIxQIxrJ7EPDA3HjLbF2BYO+hBq0H7vt/OjXLWJOIrQCQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "45aec225-91cf-4c92-83ef-4dc3bce65f33",
+                            SecurityStamp = "6541dc5c-f699-48ad-94c9-b6cf27ca855c",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
+                });
+
+            modelBuilder.Entity("GreenBook.Shared.Domain.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NumOfLike")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Like");
+                });
+
+            modelBuilder.Entity("GreenBook.Shared.Domain.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LocationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Location");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -316,14 +383,14 @@ namespace GreenBook.Server.Migrations
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "02b77080-6cb0-4b44-b685-85bdc0c8afaa",
+                            ConcurrencyStamp = "e2e11804-ef1f-47f8-b2d2-b33d91f532e8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "e3eb8052-7c55-4815-b3b8-aeee9a4764d6",
+                            ConcurrencyStamp = "62ca7366-b392-46dd-b0d9-93dce0b9a159",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -455,6 +522,28 @@ namespace GreenBook.Server.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("GreenBook.Shared.Domain.Like", b =>
+                {
+                    b.HasOne("GreenBook.Client.Shared.Domain.Post", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("GreenBook.Shared.Domain.Location", b =>
+                {
+                    b.HasOne("GreenBook.Client.Shared.Domain.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -509,6 +598,8 @@ namespace GreenBook.Server.Migrations
             modelBuilder.Entity("GreenBook.Client.Shared.Domain.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

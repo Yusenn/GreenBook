@@ -1,5 +1,6 @@
 ﻿using GreenBook.Client.Shared.Domain;
 using GreenBook.Server.Models;
+using GreenBook.Shared.Domain;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,8 @@ namespace GreenBook.Server.IRepository
         IGenericRepository<Comment> Comments { get; }
         IGenericRepository<Post> Posts { get; }
         //IGenericRepository<ApplicationUser> ApplicationUser { get; }
+        IGenericRepository<Like> Likes { get; }
+
+        IGenericRepository<Location> Locations { get; }
     }
 }

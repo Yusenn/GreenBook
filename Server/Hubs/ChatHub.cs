@@ -8,9 +8,14 @@ namespace GreenBook.Server.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage (string user, string message)
+        public async Task SendMessageToAll (string user, string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.All.SendAsync("ReceiveMessage", user, message);   
+        }
+        public async Task SendMessageToOne (string userId, string message)
+        {
+
+            await Clients.User(userId).SendAsync("ReceiveMessage", message);
         }
     }
 }

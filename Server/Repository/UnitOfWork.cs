@@ -2,6 +2,7 @@
 using GreenBook.Server.Data;
 using GreenBook.Server.IRepository;
 using GreenBook.Server.Models;
+using GreenBook.Shared.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,8 @@ namespace GreenBook.Server.Repository
         private readonly ApplicationDbContext _context;
         private IGenericRepository<Comment> _comments;
         private IGenericRepository<Post> _posts;
-        //private IGenericRepository<ApplicationUser> _applicationuser;
-
-
+        private IGenericRepository<Like> _likes;
+        private IGenericRepository<Location> _locations;
         private UserManager<ApplicationUser> _userManager;
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
@@ -34,8 +34,12 @@ namespace GreenBook.Server.Repository
             => _comments ??= new GenericRepository<Comment>(_context);
         public IGenericRepository<Post> Posts
             => _posts ??= new GenericRepository<Post>(_context);
+        public IGenericRepository<Like> Likes
+            => _likes ??= new GenericRepository<Like>(_context);
+        public IGenericRepository<Location> Locations
+           => _locations ??= new GenericRepository<Location>(_context);
         //public IGenericRepository<ApplicationUser> ApplicationUser
-            //=> _applicationuser ??= new GenericRepository<ApplicationUser>(_context);
+        //=> _applicationuser ??= new GenericRepository<ApplicationUser>(_context);
 
 
         public void Dispose()

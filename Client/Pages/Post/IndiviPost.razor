@@ -2,80 +2,145 @@
 @inject HttpClient _client
 @inject AuthenticationStateProvider _GetAuthenticationStateAsync
 @inject NavigationManager _navManager
-    <head>
-        <link href="css/SinglePost.css" rel="stylesheet" />
-    </head>
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime js
+
+<head>
+    <link href="css/SinglePost.css" rel="stylesheet" />
+</head>
 
 
-    <div class="header"></div>
-    <div class="content">   
-        <div class="wrap">
-            <div class="single-page">
-                <div class="single-page-content">
-                    <h3>@Post.Title</h3>
-                    <img src="@Post.PicUrl" />
-                    <p>@Post.Location</p>
-                    <p>@Post.Text</p>
-                </div>
-            </div>
-            <h2>Comments</h2>
-            @if (Comments == null)
-            {
-                <p>There is no comment yet</p>
-            }
-            else
-            {
-                foreach (var comment in Comments)
+<div class="header"></div>
+<div class="content">
+    <div class="wrap">
+        <div class="single-page">
+            <div class="single-page-content">
+                <h3>@Post.Title</h3>
+                <p>
+                    <a href="/chat/@Post.UserId">@Post.CreateBy</a>
+                </p>
+                <img src="@Post.PicUrl" />
+                <p>@Post.Location</p>
+                <p>@Post.Text</p>
+                @if (Likes != null)
                 {
-                    if (comment.PostId == Id)
+                    foreach (var like in Likes)
                     {
-                        <div class="comment-section">
-                            <p>@comment.CreateBy : @comment.Text</p>
-                        </div>
+                        if (like.PostId == Id)
+                        {
+                            NumOfLike += 1;
+                        }
                     }
-
                 }
-            }
-            <div class="comment-box">
-                <h2>Leave a Comment</h2>
-                <EditForm Model="@comment" OnValidSubmit="CreateComment">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div>
-                        <InputTextArea @bind-Value="comment.Text" class="form-control" />
-                        <ValidationMessage For="@(()=>comment.Text)" />
-                    </div>
-                    <button type="submit" class="btn btn-success btn-block">
-                        Create Comment
-                    </button>
-                </EditForm>
+                <p>Number Of Like: @NumOfLike</p>
+                <button type="submit" class="btn- btn-secondary" @onclick="AddLike">
+                    like
+                </button>
             </div>
         </div>
-    </div>
-
-    @code {
-        [Parameter] public int Id { get; set; }
-        Post Post = new Post();
-        private IList<Comment> Comments;
-        Comment comment = new Comment();
-        
-
-        protected async override Task OnInitializedAsync()
+        <h2>Comments</h2>
+        @if (Comments == null)
         {
-            Post = await _client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{Id}");
-            Comments = await _client.GetFromJsonAsync<List<Comment>>($"{Endpoints.CommentsEndpoint}");
-
-            //var authstate = await _GetAuthenticationStateAsync.GetAuthenticationStateAsync();
-            //var user = authstate.User;
-            //var name = user.Identity.Name;
+            <p>There is no comment yet</p>
         }
-
-        private async Task CreateComment()
+        else
         {
-            comment.PostId = Id;
-            await _client.PostAsJsonAsync(Endpoints.CommentsEndpoint, comment);
+            foreach (var comment in Comments)
+            {
+                if (comment.PostId == Id)
+                {
+                    <div class="comment-section">
+                        <p>@comment.CreateBy : @comment.Text</p>
+                    </div>
+                }
 
-            await OnInitializedAsync();
+            }
+        }
+        <div class="comment-box">
+            <h2>Leave a Comment</h2>
+            <EditForm Model="@comment" OnValidSubmit="CreateComment">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div>
+                    <InputTextArea @bind-Value="comment.Text" class="form-control" />
+                    <ValidationMessage For="@(()=>comment.Text)" />
+                </div>
+                <button type="submit" class="btn btn-success btn-block">
+                    Create Comment
+                </button>
+            </EditForm>
+        </div>
+    </div>
+</div>
 
+@code {
+    [Parameter] public int Id { get; set; }
+    Post Post = new Post();
+    private int NumOfLike;
+    private IList<Comment> Comments;
+    private IList<Like> Likes;
+    Comment comment = new Comment();
+    Like like = new Like();
+    Like lastLike = new Like();
+    private string _currentUserId;
+    private string _currentUserName;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    string message = "You Can Only Click One Time";
+    private int i =0;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        NumOfLike = 0;
+        Post = await _client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{Id}");
+        Comments = await _client.GetFromJsonAsync<List<Comment>>($"{Endpoints.CommentsEndpoint}");
+        Likes = await _client.GetFromJsonAsync<List<Like>>($"{Endpoints.LikesEndpoint}");
+        //var authstate = await _GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        //var user = authstate.User;
+        //var name = user.Identity.Name;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            //_currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                    if (claim.Type == "name")
+                    {
+                        _currentUserName = claim.Value;
+                        continue;
+                    }
+                }
+            }
         }
     }
+
+    private async Task CreateComment()
+    {
+        comment.PostId = Id;
+        await _client.PostAsJsonAsync(Endpoints.CommentsEndpoint, comment);
+
+        await OnInitializedAsync();
+
+    }
+
+    private async Task AddLike()
+    {
+
+        like.PostId = Id;
+        like.NumOfLike += 1;
+        await _client.PostAsJsonAsync(Endpoints.LikesEndpoint, like);
+
+        await OnInitializedAsync();
+    }
+
+}

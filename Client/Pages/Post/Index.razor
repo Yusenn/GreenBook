@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="body">
                                     <div class="img-post m-b-15">
-                                        <img src="@post.PicUrl"  width="400" height="200" alt="Awesome Image">
+                                        <img src="@post.PicUrl" width="400" height="200" alt="Awesome Image">
                                         <div class="social_share">
                                             <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-facebook"></i></button>
                                             <button class="btn btn-primary btn-icon btn-icon-mini btn-round"><i class="zmdi zmdi-twitter"></i></button>
@@ -100,7 +100,6 @@
 
 @code{
     private List<Post> Posts;
-
     protected async override Task OnInitializedAsync()
     {
         Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");

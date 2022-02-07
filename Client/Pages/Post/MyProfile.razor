@@ -7,6 +7,10 @@
 
 <p>Id: @_currentUserId</p>
 <p>Name: @_currentUserName</p>
+<a href="/profile/edit" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Edit My Profile
+</a>
 
 @if (Posts == null)
 {
@@ -39,6 +43,9 @@ else
                             <a href="/post/edit/@post.Id" class="btn btn-warning">
                                 <span class="oi oi-pencil"></span>
                             </a>
+                            <a href="/post/addLocation/@post.Id" class="btn btn-info">
+                                <span class="oi oi-pencil"></span>
+                            </a>
                             <button class="btn btn-danger" @onclick="@(()=>Delete(post.Id))">
                                 <span class="oi oi-delete"></span>
                             </button>
@@ -63,8 +70,7 @@ else
     protected async override Task OnInitializedAsync()
     {
         Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
-        AppUsers = await
-        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        
         var authState = await
         AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;

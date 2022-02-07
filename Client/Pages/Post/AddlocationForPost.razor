@@ -1,0 +1,47 @@
+﻿@page "/post/addLocation/{Id:int}"
+
+@inject HttpClient _client
+@inject AuthenticationStateProvider _GetAuthenticationStateAsync
+@inject NavigationManager _navManager
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime js
+
+<h3>AddlocationForPost</h3>
+
+<EditForm Model="location" OnValidSubmit="AddLocation">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <InputTextArea @bind-Value="location.LocationName" class="form-control" />
+        <ValidationMessage For="@(()=>location.LocationName)" />
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+    Add Location
+    </button>
+
+</EditForm>
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    Post Post = new Post();
+    Location location = new Location();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        Post = await _client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{Id}");
+    }
+
+    private async Task AddLocation()
+    {
+        location.LocationName = location.LocationName;
+        location.PostId = Id;
+        await _client.PostAsJsonAsync(Endpoints.LocationsEndpoint, location);
+        _navManager.NavigateTo("/");
+
+    }
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreenBook.Shared.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace GreenBook.Client.Shared.Domain
 {
     public class Post : BaseDomainModel
-    {   
+    {
         [Required]
         public string Title { get; set; }
         [Required]
@@ -15,7 +16,8 @@ namespace GreenBook.Client.Shared.Domain
         public string Location { get; set; }
         public string PicUrl { get; set; }
         public string UserId { get; set; }
+        public int UserIId { get; set; }
         public virtual List<Comment> Comments { get; set; }
+        public virtual List<Like> Likes { get; set; }
     }
 }
-    

@@ -1,4 +1,4 @@
-using GreenBook.Server.Data;
+﻿using GreenBook.Server.Data;
 using GreenBook.Server.IRepository;
 using GreenBook.Server.Models;
 using GreenBook.Server.Repository;
@@ -63,6 +63,9 @@ namespace GreenBook.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
         }
 
