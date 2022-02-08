@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GreenBook.Shared.Domain
 {
-    public class Location : BaseDomainModel
+    public class Tag : BaseDomainModel
     {
         [Required]
-        public string LocationName { get; set; }
+        public string Text { get; set; }
         public int PostId { get; set; }
-        public virtual Post Post{ get; set; }
+        public virtual Post Post { get; set; }
     }
 }

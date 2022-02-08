@@ -24,6 +24,8 @@ namespace GreenBook.Server.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Like> Like { get; set; }
         public DbSet<Location> Location { get; set; }
+        public DbSet<Tag> Tag { get; set; }
+        public DbSet<Collection> Collection { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

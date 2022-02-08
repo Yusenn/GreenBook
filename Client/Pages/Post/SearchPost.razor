@@ -14,42 +14,42 @@
 else
 {
 <table id="postsTable" class="table table-responsive">
-    <thead>
+    <thread>
 
-        <tr>
-            <th>Post Title </th>
-            <th>Post Time </th>
-            <th>Post Author </th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>Post Title </th>
+                <th>Post Time </th>
+                <th>Post Author </th>
+                <th>Actions</th>
+            </tr>
 
-    </thead>
+    </thread>
 
 
     <tbody>
 
-        @foreach (var post in Posts)
-        {
-        <tr>
-            <td>@post.Title</td>
-            <td>@post.DateCreate</td>
-            <td>@post.CreateBy</td>
-            <td>
-                <a href="/post/view/@post.Id" class="btn btn-primary">
-                    <span class="oi oi-book"></span>
-                </a>
-            </td>
-        </tr>
-         }
-            
+            @foreach (var post in Posts)
+            {
+                <tr>
+                    <td>@post.Title</td>
+                    <td>@post.DateCreate</td>
+                    <td>@post.CreateBy</td>
+                    <td>
+                        <a href="/post/view/@post.Id" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
         </tbody>
-</table>
+    </table>
 }
 
 
 @code {
     private List<Post> Posts;
-    
+
     protected async override Task OnInitializedAsync()
     {
         Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
