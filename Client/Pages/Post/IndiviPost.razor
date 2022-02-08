@@ -71,8 +71,10 @@
                 </button>
             </EditForm>
         </div>
+        <div><button type="submit" @onclick="@OnSaveCollection">Save Collection</button></div>
     </div>
 </div>
+
 
 @code {
     [Parameter] public int Id { get; set; }
@@ -81,6 +83,7 @@
     private IList<Comment> Comments;
     private IList<Like> Likes;
     Comment comment = new Comment();
+    Collection collection = new Collection();
     Like like = new Like();
     Like lastLike = new Like();
     private string _currentUserId;
@@ -131,6 +134,14 @@
 
         await OnInitializedAsync();
 
+    }
+
+    private async Task OnSaveCollection(MouseEventArgs mouseEventArgs)
+    {
+        collection.PostId = Id;
+        await _client.PostAsJsonAsync(Endpoints.CollectionsEndpoint, collection);
+
+        await OnInitializedAsync();
     }
 
     private async Task AddLike()

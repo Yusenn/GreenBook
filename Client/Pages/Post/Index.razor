@@ -3,6 +3,9 @@
 @inject AuthenticationStateProvider _GetAuthenticationStateAsync
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
+
 @using Microsoft.AspNetCore.Components.Authorization;
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
@@ -20,14 +23,14 @@
         else
         {
             <table class="table table-responsive" id="postsTable">
-                <thread>
+                <thead>
                     <tr>
                         <th>Post Title </th>
                         <th>Post Time </th>
                         <th>Post Author </th>
                         <th>Actions</th>
                     </tr>
-                </thread>
+                </thead>
                 <tbody>
                     @foreach (var post in Posts)
                     {
@@ -74,6 +77,7 @@
                                         <li><a href="javascript:void(0);"><i class="zmdi zmdi-account col-blue"></i>Post By:@post.CreateBy</a></li>
                                         <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Technology</a></li>
                                         <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Location:@post.Location</a></li>
+                                        <li><a href="javascript:void(0);"><i class="zmdi zmdi-label col-amber"></i>Tag:@post.Tag</a></li>
                                     </ul>
                                 </div>
                                 <div class="body">
@@ -102,6 +106,7 @@
     private List<Post> Posts;
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
 
     }
@@ -124,7 +129,7 @@
 
     public void Dispose()
     {
+        _interceptor.DisposeEvent();
         js.InvokeVoidAsync("DataTablesDispose", "#postsTable");
     }
 }
-    

@@ -1,0 +1,56 @@
+﻿@page "/collection"
+@inject HttpClient _client
+@inject AuthenticationStateProvider _GetAuthenticationStateAsync
+@inject IJSRuntime js
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Authorization;
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+
+<h3>ViewCollection</h3>
+
+@if (Collections == null)
+{
+    <div class="alert alert-info">Loading Collections...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Post</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var collection in Collections)
+            {
+                <tr>
+                    <td>
+                        <a href="/post/view/@collection.PostId" class="btn btn-pimary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(()=>Delete(collection.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<Collection> Collections;
+    protected async override Task OnInitializedAsync()
+    {
+        Collections = await _client.GetFromJsonAsync<List<Collection>>($"{Endpoints.CollectionsEndpoint}");
+    }
+    async Task Delete(int collectionId)
+    {
+        var collection = Collections.First(q => q.Id == collectionId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {collection.CollectionName}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.CollectionsEndpoint}/{collectionId}");
+            await OnInitializedAsync();
+        }
+    }
+}

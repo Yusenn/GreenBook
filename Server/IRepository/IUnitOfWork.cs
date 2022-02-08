@@ -17,7 +17,8 @@ namespace GreenBook.Server.IRepository
         IGenericRepository<Post> Posts { get; }
         //IGenericRepository<ApplicationUser> ApplicationUser { get; }
         IGenericRepository<Like> Likes { get; }
-
         IGenericRepository<Location> Locations { get; }
+        IGenericRepository<Tag> Tags { get; }
+        IGenericRepository<Collection> Collections { get; }
     }
 }

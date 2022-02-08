@@ -1,0 +1,47 @@
+﻿@page "/post/addTag/{Id:int}"
+
+@inject HttpClient _client
+@inject AuthenticationStateProvider _GetAuthenticationStateAsync
+@inject NavigationManager _navManager
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime js
+
+<h3>AddTagForPost</h3>
+
+<EditForm Model="tag" OnValidSubmit="AddTag">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <InputTextArea @bind-Value="tag.Text" class="form-control" />
+        <ValidationMessage For="@(()=>tag.Text)" />
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+        Add Location
+    </button>
+
+</EditForm>
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    Post Post = new Post();
+    Tag tag = new Tag();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        Post = await _client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{Id}");
+    }
+
+    private async Task AddTag()
+    {
+        tag.Text = tag.Text;
+        tag.PostId = Id;
+        await _client.PostAsJsonAsync(Endpoints.TagsEndpoint, tag);
+        _navManager.NavigateTo("/");
+
+    }
+}
