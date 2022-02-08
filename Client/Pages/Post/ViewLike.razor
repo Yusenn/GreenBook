@@ -1,0 +1,77 @@
+﻿@page "/post/like"
+@inject HttpClient _client
+@inject AuthenticationStateProvider _GetAuthenticationStateAsync
+@inject NavigationManager _navManager
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime js
+
+
+<h3>ViewLike</h3>
+
+@if(Likes == null)
+{
+        <div class="alert alert-info">Loading Posts...</div>
+
+}
+else
+{
+<table id="likesTable" class="table table-responsive">
+    <thead>
+
+        <tr>
+            <th>Number Of Like</th>
+            <th>Post Author </th>
+            <th>Actions</th>
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        @foreach (var like in Likes)
+        {   
+            <tr>
+                <td>@like.NumOfLike</td>
+                <td>@like.CreateBy</td>
+                <td>
+                    <a href="/post/view/@like.PostId" class="btn btn-primary">
+                        <span class="oi oi-book"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+}
+
+
+
+@code {
+    private List<Like> Likes;
+    private List<Post> Posts;
+    Post Post = new Post();
+
+
+
+    protected async override Task OnInitializedAsync()
+
+    {
+        Likes = await _client.GetFromJsonAsync<List<Like>>($"{Endpoints.LikesEndpoint}");
+        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
+
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#likesTable");
+    }
+
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#likesTable");
+    }
+
+}

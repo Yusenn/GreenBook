@@ -14,7 +14,7 @@
 else
 {
 <table id="postsTable" class="table table-responsive">
-    <thread>
+    <thead>
 
         <tr>
             <th>Post Title </th>
@@ -23,7 +23,7 @@ else
             <th>Actions</th>
         </tr>
 
-    </thread>
+    </thead>
 
 
     <tbody>
@@ -58,12 +58,12 @@ else
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        await js.InvokeVoidAsync("AddDataTable", "postsTable");
+        await js.InvokeVoidAsync("AddDataTable", "#postsTable");
     }
 
     public void Dispose()
     {
-        js.InvokeVoidAsync("DataTablesDispose", "postsTable");
+        js.InvokeVoidAsync("DataTablesDispose", "#postsTable");
     }
 
 }
