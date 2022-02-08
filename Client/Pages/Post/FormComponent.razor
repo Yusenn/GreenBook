@@ -40,6 +40,14 @@
 
         </div>
     </div>
+    <div class="form-group">
+        <label>Tag: </label>
+        <div>
+            <InputText @bind-Value="@post.Tag" class="form-control" />
+            <ValidationMessage For="@(()=>post.Tag)" />
+
+        </div>
+    </div>
     <button type="submit" class="btn btn-success btn-block">
         @ButtonText
     </button>

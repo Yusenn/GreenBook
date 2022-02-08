@@ -22,6 +22,8 @@ namespace GreenBook.Server.Repository
         private IGenericRepository<Post> _posts;
         private IGenericRepository<Like> _likes;
         private IGenericRepository<Location> _locations;
+        private IGenericRepository<Tag> _tags;
+        private IGenericRepository<Collection> _collections;
         private UserManager<ApplicationUser> _userManager;
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
@@ -38,8 +40,10 @@ namespace GreenBook.Server.Repository
             => _likes ??= new GenericRepository<Like>(_context);
         public IGenericRepository<Location> Locations
            => _locations ??= new GenericRepository<Location>(_context);
-        //public IGenericRepository<ApplicationUser> ApplicationUser
-        //=> _applicationuser ??= new GenericRepository<ApplicationUser>(_context);
+        public IGenericRepository<Tag> Tags
+           => _tags ??= new GenericRepository<Tag>(_context);
+        public IGenericRepository<Collection> Collections
+           => _collections ??= new GenericRepository<Collection>(_context);
 
 
         public void Dispose()

@@ -1,0 +1,63 @@
+﻿@inject HttpClient _client
+@inject IJSRuntime js
+@implements IDisposable
+@attribute [Authorize]
+
+@page "/tag/search"
+
+<h3 class="card-title">Search Tags</h3>
+
+@if (Tags == null)
+{
+    <div class="alert alert-info">Loading Tags...</div>
+}
+else
+{
+    <table class="table table-responsive" id="tagsTable">
+        <thead>
+
+            <tr>
+                <th>Tag Text </th>
+                <th>Post View</th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var tag in Tags)
+            {
+                <tr>
+                    <td>@tag.Text</td>
+                    <td>
+                        <a href="/post/view/@tag.PostId" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<Tag> Tags;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Tags = await _client.GetFromJsonAsync<List<Tag>>($"{Endpoints.TagsEndpoint}");
+
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#tagsTable");
+    }
+
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#tagsTable");
+    }
+
+}

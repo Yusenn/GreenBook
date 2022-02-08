@@ -15,6 +15,7 @@ namespace GreenBook.Client.Shared.Domain
         public string Text { get; set; }
         public string Location { get; set; }
         public string PicUrl { get; set; }
+        public string Tag { get; set; }
         public string UserId { get; set; }
         public int UserIId { get; set; }
         public virtual List<Comment> Comments { get; set; }

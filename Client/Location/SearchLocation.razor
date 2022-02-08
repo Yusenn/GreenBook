@@ -1,0 +1,63 @@
+﻿@inject HttpClient _client
+@inject IJSRuntime js
+@implements IDisposable
+@attribute [Authorize]
+
+@page "/location/search"
+
+<h3 class="card-title">Search Locations</h3>
+
+@if (Locations == null)
+{
+    <div class="alert alert-info">Loading Locations...</div>
+}
+else
+{
+    <table class="table table-responsive" id="locationsTable">
+        <thead>
+
+            <tr>
+                <th>Location Name </th>
+                <th>Post View</th>
+            </tr>
+
+        </thead>
+        <tbody>
+
+            @foreach (var location in Locations)
+            {
+                <tr>
+                    <td>@location.LocationName</td>
+                    <td>
+                        <a href="/post/view/@location.PostId" class="btn btn-primary">
+                            <span class="oi oi-book"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<Location> Locations;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Locations = await _client.GetFromJsonAsync<List<Location>>($"{Endpoints.LocationsEndpoint}");
+
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#locationsTable");
+    }
+
+    public void Dispose()
+    {
+        js.InvokeVoidAsync("DataTablesDispose", "#locationsTable");
+    }
+
+}
